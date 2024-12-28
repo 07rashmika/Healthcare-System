@@ -14,10 +14,12 @@ public class Main {
             AppointmentView view = new AppointmentView();
             AppointmentModel model = new AppointmentModel();
              new AppointmentController(model,view);
+
         }catch (Exception e){
             JOptionPane.showMessageDialog(null,"Error running application"+e.getMessage());
         }
 
     }
+
 }
 
