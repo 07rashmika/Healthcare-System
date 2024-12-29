@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+
 
 public class AppointmentModel {
 
@@ -49,6 +49,7 @@ public class AppointmentModel {
                 ResultSet rs = stmt.executeQuery(query);
 
                 while(rs.next()){
+                    //adds into the array list as   PatientId - FirstName
                     patients.add(rs.getString("PatientId") + " - " + rs.getString("FirstName"));
                 }
             }
@@ -62,6 +63,7 @@ public class AppointmentModel {
         return patients;
     }
 
+    //Retrieving Email of the patient from patients table
     public String getEmail(int patientId){
         String selectQuery = "SELECT EmailAddress FROM Patients WHERE PatientId = ?";
         String email = "";
@@ -81,7 +83,7 @@ public class AppointmentModel {
         return email;
     }
 
-    //method to create Appointment
+    //boolean method to create Appointment takes needed column details as parameters, parameters are passed from the AppointmentController class
     public boolean createAppointment(int DoctorID, String DoctorName, int PatientId, String PatientName, Date AppointmentDate, java.sql.Time AppointmentTime, String AppointmentFee, String Description, String Email){
 
 
@@ -108,14 +110,16 @@ public class AppointmentModel {
          result = prepstmt.executeUpdate();
 
 
+
         }
         catch (SQLException e){
             System.out.println("Couldn't insert data "+e.getMessage());
         }
 
-        return result > 0;
+        return result > 0;//returns true if any rows have been affected
     }
 
+    //method to get all the appointment details from the appointments table
     public List<Object[]> getAppointmentDetails(){
 
         List<Object[]> appointmentDetails = new ArrayList<>();
@@ -124,7 +128,7 @@ public class AppointmentModel {
 
         try{
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(query);//returns a set of items
 
                 while(rs.next()){
                     appointmentDetails.add(new Object[]{
@@ -151,6 +155,7 @@ public class AppointmentModel {
         return appointmentDetails;
     }
 
+    //method to remove an appointment
     public boolean removeAppointment(int appointmentID){
 
         String query = "DELETE FROM Appointments WHERE AppointmentID = ?";
@@ -168,4 +173,43 @@ public class AppointmentModel {
         return result > 0;
     }
 
+    //boolean method to update an appointment
+    public boolean updateAppointment(int AppointmentID, int DoctorID, String DoctorName, int PatientId, String PatientName, Date AppointmentDate, java.sql.Time AppointmentTime, String AppointmentFee, String Description){
+
+
+        String query = "UPDATE Appointments SET DoctorID = ?, DoctorName = ?, PatientId = ?, PatientName = ?, AppointmentDate = ?, AppointmentTime = ?, AppointmentFee = ?, Description = ? WHERE AppointmentId = ? ";
+        int result = 0;
+
+        // Converting the java.util date type provided by the dateChooser into java.sql date type
+        java.sql.Date sqlDate = new java.sql.Date(AppointmentDate.getTime());
+
+        try{
+            PreparedStatement prepstmt = con.prepareStatement(query);
+
+
+            prepstmt.setInt(1,DoctorID);
+            prepstmt.setString(2,DoctorName);
+            prepstmt.setInt(3,PatientId);
+            prepstmt.setString(4,PatientName);
+            prepstmt.setDate(5, sqlDate);
+            prepstmt.setTime(6, AppointmentTime);
+            prepstmt.setString(7, AppointmentFee);
+            prepstmt.setString(8, Description);
+            prepstmt.setInt(9, AppointmentID);
+
+
+            result = prepstmt.executeUpdate();
+
+
+
+        }
+        catch (SQLException e){
+            System.out.println("Couldn't Update data "+e.getMessage());
+        }
+
+        return result > 0;//returns true if any rows have been affected
+    }
+
+
+//---------------------------------------------END OF CODE---------------------------------------------//
 }
