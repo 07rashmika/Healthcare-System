@@ -6,8 +6,11 @@ import Model.AppointmentModel;
 import View.AppointmentView;
 import javax.swing.*;
 
+
+
 public class Main {
     public static void main(String[] args) {
+
 
         try{
             AppointmentView view = new AppointmentView();
@@ -18,4 +21,6 @@ public class Main {
             JOptionPane.showMessageDialog(null,"Error running application "+e.getMessage());
         }
     }
+
 }
+

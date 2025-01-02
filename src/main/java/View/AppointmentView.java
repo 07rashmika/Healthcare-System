@@ -1,4 +1,4 @@
-package View;
+package main.java.View;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -33,6 +33,8 @@ public class AppointmentView extends JFrame {
     private JScrollPane appointmentScrollPane;
     private JPanel timePanel;
     private JSpinner timeSpinner;
+
+
 
     DefaultTableModel defaultTableModel = new DefaultTableModel();
     JDateChooser dateChooser = new JDateChooser();

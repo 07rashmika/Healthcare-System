@@ -1,4 +1,4 @@
-package main.java.DBController;
+package DBController;
 
 import java.sql.*;
 
