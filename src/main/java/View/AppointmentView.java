@@ -1,4 +1,4 @@
-package View;
+package main.java.View;
 
 import com.toedter.calendar.JDateChooser;
 
