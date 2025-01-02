@@ -34,8 +34,6 @@ public class AppointmentView extends JFrame {
     private JPanel timePanel;
     private JSpinner timeSpinner;
 
-
-
     DefaultTableModel defaultTableModel = new DefaultTableModel();
     JDateChooser dateChooser = new JDateChooser();
 

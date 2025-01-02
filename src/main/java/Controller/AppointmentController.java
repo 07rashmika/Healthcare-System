@@ -1,5 +1,4 @@
-package Controller;
-
+package main.java.Controller;
 
 import Model.AppointmentModel;
 import View.AppointmentView;

@@ -1,5 +1,4 @@
-package Model;
-
+package main.java.Model;
 
 import DBController.DBConnection;
 
@@ -8,12 +7,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 public class AppointmentModel {
 
     private final Connection con = DBConnection.startConnection();
 
-    //Adding the doctor names into a array list to retrieve and add it into the doctorOption combo box
+    //Adding the doctor names into an array list to retrieve and add it into the doctorOption combo box
     public ArrayList<String> getDoctors(){
 
         ArrayList<String> doctors = new ArrayList<>();
