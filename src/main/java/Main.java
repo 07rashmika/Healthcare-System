@@ -10,6 +10,8 @@ public class Main {
     public static void main(String[] args) {
 
 
+        //NEED TO ADD A RESET BUTTON TO RESET THE APPOINTMENT FORM
+
         try{
             AppointmentView view = new AppointmentView();
             AppointmentModel model = new AppointmentModel();
