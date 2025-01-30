@@ -5,7 +5,7 @@ import java.sql.*;
 public class DBConnection {
 
     //Database Connection Credentials
-    private static String url = "jdbc:sqlserver://sliitdb.cbewo8icgg6v.us-east-1.rds.amazonaws.com:1433;"
+    private static String url = "jdbc:sqlserver://sliitdbnew.c5usykwagrux.us-east-1.rds.amazonaws.com:1433;"
             + "databaseName=OOP;"
             + "encrypt=true;"
             + "trustServerCertificate=true;";
