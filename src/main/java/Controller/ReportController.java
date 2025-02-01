@@ -1,13 +1,11 @@
 package Controller;
 
 import Model.ReportModel;
-import View.ReportView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.util.List;
+import View.ReportView;
 
 public class ReportController {
 

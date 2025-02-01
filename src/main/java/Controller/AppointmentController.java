@@ -56,6 +56,8 @@ public class AppointmentController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateAppointment();
+                loadAppointments();
+                view.setValuesEmpty();
             }
         });
         //JTable row selection listeners
@@ -65,8 +67,7 @@ public class AppointmentController {
             }
         });
 
-        //remove appointments that are finished
-        removeExpiredAppointmentScheduler();
+
 
     }
 
@@ -75,6 +76,9 @@ public class AppointmentController {
     //method to BookAppointment
     private void bookAppointment(){
         try{
+
+            //retrieving appointment ID
+            int AppointmentID = view.getAppointmentIDValue();
 
             //retrieving the doctor ID and doctor name from the doctor option drop down
             String[] doctorDetails = view.getSelectedDoctor().split(" - ");
@@ -140,7 +144,11 @@ public class AppointmentController {
                 return;
             }
 
-            boolean success = model.createAppointment(DoctorID,DoctorName,PatientId,PatientName,AppointmentDate,selectedTime,AppointmentFee,AppointmentDescription,email);//pass parameters into the model class method
+
+        boolean success = model.createAppointment(AppointmentID,DoctorID,DoctorName,PatientId,PatientName,AppointmentDate,selectedTime,AppointmentFee,AppointmentDescription,email);//pass parameters into the model class method
+
+        
+
 
             if(success){
                 JOptionPane.showMessageDialog(view,"Appointment Booking Success");
@@ -150,12 +158,12 @@ public class AppointmentController {
                 JOptionPane.showMessageDialog(view,"Appointment Booking Failed");
             }
         } catch (Exception e) {
-            System.out.println("Error in appointment booking" + e.getMessage());
+            System.out.println("Error in appointment booking " + e.getMessage());
         }
 
     }
 
-    //method to delete and appointment
+    //method to delete an appointment
     public void deleteAppointment(){
 
         int selectedRowCount = view.getSelectedRowCount();
@@ -192,7 +200,9 @@ public class AppointmentController {
 
         try{
 
-            int appointmentID = view.getAppointmentID();
+        int appointmentIDValue = view.getAppointmentIDValue();
+        int appointmentID = view.getAppointmentID();
+
 
             String[] doctorDetails = view.getSelectedDoctor().split(" - ");
             int doctorID = Integer.parseInt(doctorDetails[0]);
@@ -251,7 +261,8 @@ public class AppointmentController {
                 return;
             }
 
-            boolean success = model.updateAppointment(appointmentID,doctorID,doctorName,patientId,patientName,appointmentDate,selectedTime,fee,description);
+
+        boolean success = model.updateAppointment(appointmentIDValue,appointmentID,doctorID,doctorName,patientId,patientName,appointmentDate,selectedTime,fee,description);
 
             if (success) {
                 // Update JTable row
@@ -293,39 +304,7 @@ public class AppointmentController {
         }
     }
 
-    //method to check and remove appointment if it has passed the system date and time
-    public void removeExpiredAppointment(){
-        int totalRowCount = view.getTotalRowCount();
-        LocalDateTime currentDateTime = LocalDateTime.now();
 
-        for(int i = totalRowCount - 1; i>=0; i--){
-            Date appointmentDate = (Date) view.getAppointmentTable().getValueAt(i,5);
-            Time appointmentTime = (Time)  view.getAppointmentTable().getValueAt(i,6);
-            int appointmentId = (int) view.getAppointmentTableModel().getValueAt(i,0);
-
-            LocalDateTime combinedDateTime = LocalDateTime.of(
-                    appointmentDate.getYear() + 1900,
-                    appointmentDate.getMonth() + 1,
-                    appointmentDate.getDate(),
-                    appointmentTime.getHours(),
-                    appointmentTime.getMinutes()
-            );
-
-            if(combinedDateTime.isBefore(currentDateTime)){
-                view.getAppointmentTableModel().removeRow(i);
-                model.removeAppointment(appointmentId);
-            }
-        }
-
-    }
-    //method to run the removeExpiredAppointment automatically every 2 minutes
-    public void removeExpiredAppointmentScheduler(){
-        Timer scheduler = new Timer(120000,event ->{
-            removeExpiredAppointment();
-            loadAppointments();
-        });
-        scheduler.start();
-    }
 
 
 //---------------------------------------------END OF CODE---------------------------------------------//
