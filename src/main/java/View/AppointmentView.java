@@ -1,6 +1,7 @@
 package View;
 
-import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar
+        .JDateChooser;
 
 
 import javax.swing.*;
