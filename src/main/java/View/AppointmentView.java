@@ -9,6 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.sql.Time;
 import java.util.Calendar;
@@ -22,11 +24,6 @@ public class AppointmentView extends JFrame {
     private JButton createApp;
     private JButton updateApp;
     private JButton deleteApp;
-    private JLabel manageDoctorLabel;
-    private JLabel managePatientLabel;
-    private JLabel manageInventoryLabel;
-    private JLabel bookAppointmentLabel;
-    private JLabel viewReportsLabel;
     private JTextArea description;
     private JTextField appointmentFee;
     private JPanel tablePanel;
@@ -35,9 +32,16 @@ public class AppointmentView extends JFrame {
     private JPanel timePanel;
     private JSpinner appointmentID;
     private JButton resetBtn;
+    private JButton doctorPageBtn;
+    private JButton patientPageBtn;
+    private JButton inventoryPageBtn;
+    private JButton appointmentPageBtn;
+    private JButton reportPageBtn;
+    private JButton stockNotifyPageBtn;
+    private JButton appointmentNotifyPageBtn;
     private JSpinner timeSpinner;
     private SpinnerNumberModel IDSpinnerModel;
-
+    private JButton[] buttons = {doctorPageBtn,patientPageBtn,inventoryPageBtn,appointmentPageBtn,reportPageBtn,stockNotifyPageBtn,appointmentNotifyPageBtn};
 
     DefaultTableModel defaultTableModel = new DefaultTableModel(){
         //overrides the isCellEditable method of default table model and makes the cell non-editable
@@ -57,14 +61,17 @@ public class AppointmentView extends JFrame {
     public AppointmentView() {
         // Set up the frame
         setTitle("Code Crew HealthCare Management System");
-        setSize(1300, 720);
+        setSize(1380, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
         setLocationRelativeTo(null);//Displays the application in the middle of the screen
         setIconImage(image);
-
         //set the time selector
         setTime();
+
+        //setting up navigation button
+        setNavigationButtons();
+
 
         //adding the datechooser into a JPanel
         setDateChooser();
@@ -85,6 +92,26 @@ public class AppointmentView extends JFrame {
         });
     }
 //--------------------------------------------------------------------------------------------------------//
+
+    //setting up navigation button
+    public void setNavigationButtons(){
+        for(JButton button:buttons){
+            button.setBorder(BorderFactory.createEmptyBorder());
+
+            //hover effect on mouse enter
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    button.setBackground(Color.decode("#B9E6B3"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    button.setBackground(Color.decode("#8ADE8D"));
+                }
+            });
+        }
+    }
 
     //setting the ID spinner not ho below 1
     public void setIDSpinner(){
