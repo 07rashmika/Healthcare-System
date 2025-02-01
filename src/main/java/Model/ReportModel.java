@@ -1,10 +1,9 @@
 package Model;
 
-import DBController.DBConnection;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import DBController.DBConnection;
 
 public class ReportModel {
 

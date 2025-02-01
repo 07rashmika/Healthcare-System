@@ -28,7 +28,7 @@ public class ReportView {
 
         // Table to display appointment details
         appointmentTable = new JTable();
-        String[] columnNames = {"Appointment Number", "Patient Name", "Doctor Name", "Appointment Date", "Fee"};
+        String[] columnNames = {"Appointment ID","DoctorID", "DoctorName", "PatientId", "PatientName", "AppointmentDate", "AppointmentTime", "AppointmentFee", "Description", "Email"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0); // 0 rows initially
         appointmentTable.setModel(model);
         JScrollPane tableScrollPane = new JScrollPane(appointmentTable);

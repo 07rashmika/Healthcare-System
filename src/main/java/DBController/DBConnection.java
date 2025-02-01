@@ -18,7 +18,7 @@ public class DBConnection {
     public static Connection startConnection(){
 
         try{
-        con = DriverManager.getConnection(url,username,password);
+            con = DriverManager.getConnection(url,username,password);
             System.out.println("Database Connection Success");
 
         }
