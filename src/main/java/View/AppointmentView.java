@@ -1,13 +1,17 @@
-package main.java.View;
+package View;
 
-import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar
+        .JDateChooser;
 
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.sql.Time;
 import java.util.Calendar;
@@ -21,22 +25,32 @@ public class AppointmentView extends JFrame {
     private JButton createApp;
     private JButton updateApp;
     private JButton deleteApp;
-    private JLabel manageDoctorLabel;
-    private JLabel managePatientLabel;
-    private JLabel manageInventoryLabel;
-    private JLabel bookAppointmentLabel;
-    private JLabel viewReportsLabel;
     private JTextArea description;
     private JTextField appointmentFee;
     private JPanel tablePanel;
     private JTable appointmentTable;
     private JScrollPane appointmentScrollPane;
     private JPanel timePanel;
+    private JSpinner appointmentID;
+    private JButton resetBtn;
+    private JButton doctorPageBtn;
+    private JButton patientPageBtn;
+    private JButton inventoryPageBtn;
+    private JButton appointmentPageBtn;
+    private JButton reportPageBtn;
+    private JButton stockNotifyPageBtn;
+    private JButton appointmentNotifyPageBtn;
     private JSpinner timeSpinner;
+    private SpinnerNumberModel IDSpinnerModel;
+    private JButton[] buttons = {doctorPageBtn,patientPageBtn,inventoryPageBtn,appointmentPageBtn,reportPageBtn,stockNotifyPageBtn,appointmentNotifyPageBtn};
 
-
-
-    DefaultTableModel defaultTableModel = new DefaultTableModel();
+    DefaultTableModel defaultTableModel = new DefaultTableModel(){
+        //overrides the isCellEditable method of default table model and makes the cell non-editable
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
     JDateChooser dateChooser = new JDateChooser();
 
     //Icon for the application shows in the top left corner of the frame
@@ -48,25 +62,64 @@ public class AppointmentView extends JFrame {
     public AppointmentView() {
         // Set up the frame
         setTitle("Code Crew HealthCare Management System");
-        setSize(1300, 720);
+        setSize(1380, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
         setLocationRelativeTo(null);//Displays the application in the middle of the screen
         setIconImage(image);
-
         //set the time selector
         setTime();
 
+        //setting up navigation button
+        setNavigationButtons();
+
+
         //adding the datechooser into a JPanel
         setDateChooser();
+
+        //set ID spinner
+        setIDSpinner();
 
         //Appointment Table Columns
         createAppointmentTable();
 
         setVisible(true);
 
+        resetBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setValuesEmpty();
+            }
+        });
     }
 //--------------------------------------------------------------------------------------------------------//
+
+    //setting up navigation button
+    public void setNavigationButtons(){
+        for(JButton button:buttons){
+            button.setBorder(BorderFactory.createEmptyBorder());
+
+            //hover effect on mouse enter
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    button.setBackground(Color.decode("#B9E6B3"));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    button.setBackground(Color.decode("#8ADE8D"));
+                }
+            });
+        }
+    }
+
+    //setting the ID spinner not ho below 1
+    public void setIDSpinner(){
+        IDSpinnerModel = new SpinnerNumberModel(1,1,999,1);
+        appointmentID.setModel(IDSpinnerModel);
+    }
+
 
     //Setting the date selector
     public void setDateChooser(){
@@ -98,9 +151,10 @@ public class AppointmentView extends JFrame {
         defaultTableModel.addColumn("AppointmentTime");
         defaultTableModel.addColumn("AppointmentFee");
         defaultTableModel.addColumn("Description");
-        defaultTableModel.addColumn("Email");
+
 
         appointmentTable.setModel(defaultTableModel);
+        appointmentTable.setDragEnabled(false);
         appointmentTable.setRowHeight(30);
 
     }
@@ -111,11 +165,11 @@ public class AppointmentView extends JFrame {
             defaultTableModel.addRow(row);
         }
     }
+//    public DefaultTableModel getAppointmentTableModel(){
+//        return defaultTableModel;
+//    }
     public JTable getAppointmentTable(){
         return appointmentTable;
-    }
-    public DefaultTableModel getAppointmentTableModel(){
-        return defaultTableModel;
     }
     public void clearAppointmentTable(){
         defaultTableModel.setRowCount(0);
@@ -147,6 +201,7 @@ public class AppointmentView extends JFrame {
 
     //Sets the data from the selected JTable row into the corresponding form fields
     public void setFieldDataFromRow(Object[] data){
+        setAppointmentID((int) data[0]);
         setDoctorOption(data[1] + " - " + data[2]);
         setPatientOption(data[3] + " - " + data[4]);
         setDateChooser((Date) data[5]);
@@ -155,6 +210,9 @@ public class AppointmentView extends JFrame {
         setDescription( (String) data[8]);
     }
     //Setters for each form fields used to set the data selected from the JTable row
+    public void setAppointmentID(int ID) {
+        appointmentID.setValue(ID);
+    }
     public void setDoctorOption(String doctor) {
         doctorOption.setSelectedItem(doctor);
     }
@@ -175,6 +233,7 @@ public class AppointmentView extends JFrame {
     }
     //set values empty after booking
     public void setValuesEmpty(){
+        appointmentID.setValue(1);
         doctorOption.setSelectedIndex(0);
         patientOption.setSelectedIndex(0);
         dateChooser.setDate(null);
@@ -198,6 +257,11 @@ public class AppointmentView extends JFrame {
             patientOption.addItem(patient);
         }
     }
+    //method to get AppointmentID
+    public int getAppointmentIDValue(){
+        return (int) appointmentID.getValue();
+    }
+
     //method to get the selected doctor name
     public String getSelectedDoctor(){
         return (String) doctorOption.getSelectedItem();

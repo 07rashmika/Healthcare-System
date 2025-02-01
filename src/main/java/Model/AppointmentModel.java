@@ -84,10 +84,10 @@ public class AppointmentModel {
     }
 
     //boolean method to create Appointment takes needed column details as parameters, parameters are passed from the AppointmentController class
-    public boolean createAppointment(int DoctorID, String DoctorName, int PatientId, String PatientName, Date AppointmentDate, java.sql.Time AppointmentTime, String AppointmentFee, String Description, String Email){
+    public boolean createAppointment(int AppointmentID,int DoctorID, String DoctorName, int PatientId, String PatientName, Date AppointmentDate, java.sql.Time AppointmentTime, String AppointmentFee, String Description, String Email){
 
 
-        String query = "INSERT INTO Appointments (DoctorID, DoctorName, PatientId, PatientName, AppointmentDate, AppointmentTime, AppointmentFee, Description, Email) VALUES (?,?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO Appointments (AppointmentID, DoctorID, DoctorName, PatientId, PatientName, AppointmentDate, AppointmentTime, AppointmentFee, Description, Email) VALUES (?,?,?,?,?,?,?,?,?,?)";
         int result = 0;
 
         // Converting the java.util date type provided by the dateChooser into java.sql date type
@@ -96,16 +96,16 @@ public class AppointmentModel {
         try{
         PreparedStatement prepstmt = con.prepareStatement(query);
 
-
-        prepstmt.setInt(1,DoctorID);
-        prepstmt.setString(2,DoctorName);
-        prepstmt.setInt(3,PatientId);
-        prepstmt.setString(4,PatientName);
-        prepstmt.setDate(5, sqlDate);
-        prepstmt.setTime(6, AppointmentTime);
-        prepstmt.setString(7, AppointmentFee);
-        prepstmt.setString(8, Description);
-        prepstmt.setString(9, Email);
+        prepstmt.setInt(1,AppointmentID);
+        prepstmt.setInt(2,DoctorID);
+        prepstmt.setString(3,DoctorName);
+        prepstmt.setInt(4,PatientId);
+        prepstmt.setString(5,PatientName);
+        prepstmt.setDate(6, sqlDate);
+        prepstmt.setTime(7, AppointmentTime);
+        prepstmt.setString(8, AppointmentFee);
+        prepstmt.setString(9, Description);
+        prepstmt.setString(10, Email);
 
          result = prepstmt.executeUpdate();
 
@@ -174,10 +174,10 @@ public class AppointmentModel {
     }
 
     //boolean method to update an appointment
-    public boolean updateAppointment(int AppointmentID, int DoctorID, String DoctorName, int PatientId, String PatientName, Date AppointmentDate, java.sql.Time AppointmentTime, String AppointmentFee, String Description){
+    public boolean updateAppointment(int appointmentIDValue,int AppointmentID, int DoctorID, String DoctorName, int PatientId, String PatientName, Date AppointmentDate, java.sql.Time AppointmentTime, String AppointmentFee, String Description){
 
 
-        String query = "UPDATE Appointments SET DoctorID = ?, DoctorName = ?, PatientId = ?, PatientName = ?, AppointmentDate = ?, AppointmentTime = ?, AppointmentFee = ?, Description = ? WHERE AppointmentId = ? ";
+        String query = "UPDATE Appointments SET AppointmentID = ?, DoctorID = ?, DoctorName = ?, PatientId = ?, PatientName = ?, AppointmentDate = ?, AppointmentTime = ?, AppointmentFee = ?, Description = ? WHERE AppointmentID = ? ";
         int result = 0;
 
         // Converting the java.util date type provided by the dateChooser into java.sql date type
@@ -186,16 +186,16 @@ public class AppointmentModel {
         try{
             PreparedStatement prepstmt = con.prepareStatement(query);
 
-
-            prepstmt.setInt(1,DoctorID);
-            prepstmt.setString(2,DoctorName);
-            prepstmt.setInt(3,PatientId);
-            prepstmt.setString(4,PatientName);
-            prepstmt.setDate(5, sqlDate);
-            prepstmt.setTime(6, AppointmentTime);
-            prepstmt.setString(7, AppointmentFee);
-            prepstmt.setString(8, Description);
-            prepstmt.setInt(9, AppointmentID);
+            prepstmt.setInt(1,appointmentIDValue);
+            prepstmt.setInt(2,DoctorID);
+            prepstmt.setString(3,DoctorName);
+            prepstmt.setInt(4,PatientId);
+            prepstmt.setString(5,PatientName);
+            prepstmt.setDate(6, sqlDate);
+            prepstmt.setTime(7, AppointmentTime);
+            prepstmt.setString(8, AppointmentFee);
+            prepstmt.setString(9, Description);
+            prepstmt.setInt(10, AppointmentID);
 
 
             result = prepstmt.executeUpdate();

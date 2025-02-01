@@ -16,18 +16,18 @@ public class AppointmentController {
     AppointmentModel model;
     AppointmentView view;
 
-//---------------------------------------------CONSTRUCTOR WITH TWO PARAMETERS---------------------------------------------//
+    //---------------------------------------------CONSTRUCTOR WITH TWO PARAMETERS---------------------------------------------//
     public AppointmentController(AppointmentModel model, AppointmentView view) {
         this.model = model;
         this.view = view;
 
         try{
-        //adding the doctor and patient details retrieved in the Appointment model into addDoctors as a parameter and as an array to loop through
-        view.addDoctors(model.getDoctors().toArray(new String[0]));
-        view.addPatients(model.getPatients().toArray(new String[0]));
+            //adding the doctor and patient details retrieved in the Appointment model into addDoctors as a parameter and as an array to loop through
+            view.addDoctors(model.getDoctors().toArray(new String[0]));
+            view.addPatients(model.getPatients().toArray(new String[0]));
 
-        //load the appointment details into the table
-        loadAppointments();
+            //load the appointment details into the table
+            loadAppointments();
 
         }
         catch (Exception e){
@@ -56,6 +56,8 @@ public class AppointmentController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateAppointment();
+                loadAppointments();
+                view.setValuesEmpty();
             }
         });
         //JTable row selection listeners
@@ -65,8 +67,7 @@ public class AppointmentController {
             }
         });
 
-        //remove appointments that are finished
-        removeExpiredAppointmentScheduler();
+
 
     }
 
@@ -75,6 +76,9 @@ public class AppointmentController {
     //method to BookAppointment
     private void bookAppointment(){
         try{
+
+            //retrieving appointment ID
+            int AppointmentID = view.getAppointmentIDValue();
 
             //retrieving the doctor ID and doctor name from the doctor option drop down
             String[] doctorDetails = view.getSelectedDoctor().split(" - ");
@@ -129,59 +133,63 @@ public class AppointmentController {
                     JOptionPane.showMessageDialog(view,"Appointment Fee can't be a negative number!!");
                     return;
                 }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid Appointment Fee format. It must be a number.");
-            return;
-        }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid Appointment Fee format. It must be a number.");
+                return;
+            }
 
-        // Validate Appointment Description
-        if (AppointmentDescription == null || AppointmentDescription.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(view,"Please enter an Description!!");
-            return;
-        }
+            // Validate Appointment Description
+            if (AppointmentDescription == null || AppointmentDescription.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(view,"Please enter an Description!!");
+                return;
+            }
 
-        boolean success = model.createAppointment(DoctorID,DoctorName,PatientId,PatientName,AppointmentDate,selectedTime,AppointmentFee,AppointmentDescription,email);//pass parameters into the model class method
 
-        if(success){
-            JOptionPane.showMessageDialog(view,"Appointment Booking Success");
-            view.setValuesEmpty();
-        }
-        else{
-            JOptionPane.showMessageDialog(view,"Appointment Booking Failed");
-        }
+        boolean success = model.createAppointment(AppointmentID,DoctorID,DoctorName,PatientId,PatientName,AppointmentDate,selectedTime,AppointmentFee,AppointmentDescription,email);//pass parameters into the model class method
+
+        
+
+
+            if(success){
+                JOptionPane.showMessageDialog(view,"Appointment Booking Success");
+                view.setValuesEmpty();
+            }
+            else{
+                JOptionPane.showMessageDialog(view,"Appointment Booking Failed");
+            }
         } catch (Exception e) {
-            System.out.println("Error in appointment booking" + e.getMessage());
+            System.out.println("Error in appointment booking " + e.getMessage());
         }
 
     }
 
-    //method to delete and appointment
+    //method to delete an appointment
     public void deleteAppointment(){
 
         int selectedRowCount = view.getSelectedRowCount();
         int rowCount = view.getTotalRowCount();
 
         try{
-        if(selectedRowCount == 0){
+            if(selectedRowCount == 0){
 
-            if(rowCount == 0){
-                JOptionPane.showMessageDialog(view,"There are no rows to delete");
-            }else{
-                JOptionPane.showMessageDialog(view,"Please select a row to delete");
+                if(rowCount == 0){
+                    JOptionPane.showMessageDialog(view,"There are no rows to delete");
+                }else{
+                    JOptionPane.showMessageDialog(view,"Please select a row to delete");
+                }
+                return;
             }
-            return;
-        }
-        int appointmentID = view.getAppointmentID();
-        boolean success = model.removeAppointment(appointmentID);
+            int appointmentID = view.getAppointmentID();
+            boolean success = model.removeAppointment(appointmentID);
 
 
-        if(success){
-            view.removeRow();
-            JOptionPane.showMessageDialog(view,"Appointment removed successfully");
-        }
-        else{
-            JOptionPane.showMessageDialog(view,"Couldn't delete Appointment");
-        }
+            if(success){
+                view.removeRow();
+                JOptionPane.showMessageDialog(view,"Appointment removed successfully");
+            }
+            else{
+                JOptionPane.showMessageDialog(view,"Couldn't delete Appointment");
+            }
         }catch (Exception e){
             System.out.println("Error deleting appointment" + e.getMessage());
         }
@@ -192,15 +200,17 @@ public class AppointmentController {
 
         try{
 
+        int appointmentIDValue = view.getAppointmentIDValue();
         int appointmentID = view.getAppointmentID();
 
-        String[] doctorDetails = view.getSelectedDoctor().split(" - ");
-        int doctorID = Integer.parseInt(doctorDetails[0]);
-        String doctorName = doctorDetails[1];
 
-        String[] patientDetails = view.getSelectedPatient().split(" - ");
-        int patientId = Integer.parseInt(patientDetails[0]);
-        String patientName = patientDetails[1];
+            String[] doctorDetails = view.getSelectedDoctor().split(" - ");
+            int doctorID = Integer.parseInt(doctorDetails[0]);
+            String doctorName = doctorDetails[1];
+
+            String[] patientDetails = view.getSelectedPatient().split(" - ");
+            int patientId = Integer.parseInt(patientDetails[0]);
+            String patientName = patientDetails[1];
 
             LocalDateTime now = LocalDateTime.now();
             Date appointmentDate = view.getDate();
@@ -220,38 +230,39 @@ public class AppointmentController {
 
 
 
-        String description = view.getDescription();
+            String description = view.getDescription();
 
-        if(combinedDateTime.isBefore(now)){
-            JOptionPane.showMessageDialog(view,"Please select a valid date");
-            return;
-        }
-
-
-        // Validate Appointment Fee
-        if (fee == null || fee.isEmpty()) {
-            JOptionPane.showMessageDialog(view,"Please enter an Appointment Fee!!");
-            return;
-        }
-
-        try {
-            int Fee = Integer.parseInt(fee);
-            if (Fee <= 0) {
-                JOptionPane.showMessageDialog(view,"Appointment Fee can't be a negative number!!");
+            if(combinedDateTime.isBefore(now)){
+                JOptionPane.showMessageDialog(view,"Please select a valid date");
                 return;
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid Appointment Fee format. It must be a number.");
-            return;
-        }
 
-        // Validate Appointment Description
-        if (description == null || description.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(view,"Please enter an Description!!");
-            return;
-        }
 
-        boolean success = model.updateAppointment(appointmentID,doctorID,doctorName,patientId,patientName,appointmentDate,selectedTime,fee,description);
+            // Validate Appointment Fee
+            if (fee == null || fee.isEmpty()) {
+                JOptionPane.showMessageDialog(view,"Please enter an Appointment Fee!!");
+                return;
+            }
+
+            try {
+                int Fee = Integer.parseInt(fee);
+                if (Fee <= 0) {
+                    JOptionPane.showMessageDialog(view,"Appointment Fee can't be a negative number!!");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid Appointment Fee format. It must be a number.");
+                return;
+            }
+
+            // Validate Appointment Description
+            if (description == null || description.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(view,"Please enter an Description!!");
+                return;
+            }
+
+
+        boolean success = model.updateAppointment(appointmentIDValue,appointmentID,doctorID,doctorName,patientId,patientName,appointmentDate,selectedTime,fee,description);
 
             if (success) {
                 // Update JTable row
@@ -293,39 +304,7 @@ public class AppointmentController {
         }
     }
 
-    //method to check and remove appointment if it has passed the system date and time
-    public void removeExpiredAppointment(){
-        int totalRowCount = view.getTotalRowCount();
-        LocalDateTime currentDateTime = LocalDateTime.now();
 
-        for(int i = totalRowCount - 1; i>=0; i--){
-            Date appointmentDate = (Date) view.getAppointmentTable().getValueAt(i,5);
-            Time appointmentTime = (Time)  view.getAppointmentTable().getValueAt(i,6);
-            int appointmentId = (int) view.getAppointmentTableModel().getValueAt(i,0);
-
-            LocalDateTime combinedDateTime = LocalDateTime.of(
-                    appointmentDate.getYear() + 1900,
-                    appointmentDate.getMonth() + 1,
-                    appointmentDate.getDate(),
-                    appointmentTime.getHours(),
-                    appointmentTime.getMinutes()
-            );
-
-            if(combinedDateTime.isBefore(currentDateTime)){
-                view.getAppointmentTableModel().removeRow(i);
-                model.removeAppointment(appointmentId);
-            }
-        }
-
-    }
-    //method to run the removeExpiredAppointment automatically every 2 minutes
-    public void removeExpiredAppointmentScheduler(){
-        Timer scheduler = new Timer(120000,event ->{
-            removeExpiredAppointment();
-            loadAppointments();
-        });
-        scheduler.start();
-    }
 
 
 //---------------------------------------------END OF CODE---------------------------------------------//
