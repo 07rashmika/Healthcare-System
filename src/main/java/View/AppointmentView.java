@@ -1,5 +1,13 @@
 package View;
 
+import Controller.DoctorController;
+import Controller.InventoryController;
+import Controller.PharmacyController;
+import Controller.ReportController;
+import Model.DoctorModel;
+import Model.InventoryModel;
+import Model.PharmacyModel;
+import Model.ReportModel;
 import com.toedter.calendar
         .JDateChooser;
 
@@ -40,9 +48,11 @@ public class AppointmentView extends JFrame {
     private JButton reportPageBtn;
     private JButton stockNotifyPageBtn;
     private JButton appointmentNotifyPageBtn;
+    private JButton inventoryReportPageBtn;
     private JSpinner timeSpinner;
     private SpinnerNumberModel IDSpinnerModel;
-    private JButton[] buttons = {doctorPageBtn,patientPageBtn,inventoryPageBtn,appointmentPageBtn,reportPageBtn,stockNotifyPageBtn,appointmentNotifyPageBtn};
+    private JButton[] buttons = {doctorPageBtn,patientPageBtn,inventoryPageBtn,appointmentPageBtn,reportPageBtn,stockNotifyPageBtn,appointmentNotifyPageBtn,inventoryReportPageBtn};
+    private JFrame frame;
 
     DefaultTableModel defaultTableModel = new DefaultTableModel(){
         //overrides the isCellEditable method of default table model and makes the cell non-editable
@@ -61,12 +71,13 @@ public class AppointmentView extends JFrame {
 //---------------------------------------------CONSTRUCTOR---------------------------------------------//
     public AppointmentView() {
         // Set up the frame
+        frame = new JFrame("Book Appointment");
         setTitle("Code Crew HealthCare Management System");
-        setSize(1380, 720);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(mainPanel);
-        setLocationRelativeTo(null);//Displays the application in the middle of the screen
-        setIconImage(image);
+        frame.setSize(1380, 720);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(mainPanel);
+        frame.setLocationRelativeTo(null);//Displays the application in the middle of the screen
+        frame.setIconImage(image);
         //set the time selector
         setTime();
 
@@ -83,7 +94,7 @@ public class AppointmentView extends JFrame {
         //Appointment Table Columns
         createAppointmentTable();
 
-        setVisible(true);
+        frame.setVisible(true);
 
         resetBtn.addActionListener(new ActionListener() {
             @Override
@@ -91,6 +102,62 @@ public class AppointmentView extends JFrame {
                 setValuesEmpty();
             }
         });
+
+//---------------------------------Navigation Buttons------------------------//
+
+        doctorPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DoctorModel model = new DoctorModel();
+                DoctorView view = new DoctorView();
+                new DoctorController(model, view);
+                frame.dispose();
+            }
+        });
+
+        inventoryPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Inventory view = new Inventory();
+                InventoryModel model = new InventoryModel();
+
+                // Pass the View and Model to the Controller
+                new InventoryController(model, view);
+                frame.dispose();
+            }
+        });
+
+        stockNotifyPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PharmacyModel model = new PharmacyModel();
+                PharmacyView view = new PharmacyView();
+                new PharmacyController(model, view);
+                frame.dispose();
+            }
+        });
+
+        inventoryReportPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new InventoryReport();
+                frame.dispose();
+            }
+        });
+
+        reportPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReportView reportView = new ReportView();// Explicitly calling frame.setVisible(true)
+                // Create the model and controller for the ReportView
+                ReportModel model = new ReportModel();
+                new ReportController(model, reportView);
+                frame.dispose();
+            }
+        });
+
+
+
     }
 //--------------------------------------------------------------------------------------------------------//
 
