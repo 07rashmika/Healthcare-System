@@ -14,6 +14,7 @@ public class PharmacyView extends JFrame {
     private JTable table;
     private DefaultTableModel tableModel;
     private JButton refreshButton;
+    private JTextField textField1;
 
 
     URL imageUrl = AppointmentView.class.getResource("/Icons/app-icon.png");

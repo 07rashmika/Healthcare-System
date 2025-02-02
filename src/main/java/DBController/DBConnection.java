@@ -7,7 +7,7 @@ public class DBConnection {
     //Database Connection Credentials
     private static String url = "jdbc:sqlserver://sliitdbnew.c5usykwagrux.us-east-1.rds.amazonaws.com:1433;"
             + "databaseName=OOP;"
-            + "encrypt=true;"
+            + "encrypt=false;"
             + "trustServerCertificate=true;";
     private static String username = "admin";
     private static String password = "admin123";
