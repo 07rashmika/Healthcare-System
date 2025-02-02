@@ -1,24 +1,25 @@
 package Model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Patient {
-    private int patientID; // Auto-incremented, primary key
+    private int patientId;
     private String firstName;
     private String lastName;
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     private String gender;
     private String contactNumber;
     private String emailAddress;
     private String address;
     private String medicalHistory;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 
-    // Constructor
-    public Patient(String firstName, String lastName, LocalDate dateOfBirth, String gender,
-                   String contactNumber, String emailAddress, String address, String medicalHistory) {
+    // Constructor with all fields
+    public Patient(int patientId, String firstName, String lastName, Date dateOfBirth, String gender,
+                   String contactNumber, String emailAddress, String address, String medicalHistory,
+                   Date createdAt, Date updatedAt) {
+        this.patientId = patientId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -27,17 +28,17 @@ public class Patient {
         this.emailAddress = emailAddress;
         this.address = address;
         this.medicalHistory = medicalHistory;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    // Getters and setters
-    public int getPatientID() {
-        return patientID;
+    // Getters and Setters
+    public int getPatientId() {
+        return patientId;
     }
 
-    public void setPatientID(int patientID) {
-        this.patientID = patientID;
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public String getFirstName() {
@@ -56,11 +57,11 @@ public class Patient {
         this.lastName = lastName;
     }
 
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -104,19 +105,19 @@ public class Patient {
         this.medicalHistory = medicalHistory;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

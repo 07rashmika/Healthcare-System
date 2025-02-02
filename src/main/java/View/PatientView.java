@@ -1,119 +1,206 @@
 package View;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionListener;
+import Controller.PatientManager;
+import Model.Patient;  // Ensure this matches the actual package path of your Patient.java class
 
-public class PatientView extends JFrame {
-    private JPanel mainPanel;
-    private JTextField firstNameField;
-    private JTextField lastNameField;
-    private JTextField contactField;
-    private JTextField emailField;
-    private JTextArea addressField;
-    private JTextArea medicalHistoryField;
-    private JComboBox<String> genderComboBox;
-    private JSpinner dobSpinner;
-    private JButton addButton;
-    private JButton updateButton;
-    private JButton deleteButton;
-    private JButton clearButton;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+public class PatientView {
+    private JFrame frame;
+    private JTextField txtPatientId, txtFirstName, txtLastName, txtDateOfBirth, txtGender, txtContactNumber, txtEmailAddress, txtAddress, txtMedicalHistory;
+    private JButton btnAddPatient, btnUpdate, btnDelete, btnSearch;
     private JTable patientTable;
-    private DefaultTableModel tableModel;
+    private PatientManager patientManager;
 
     public PatientView() {
-        setTitle("Patient Management");
-        setSize(900, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        patientManager = new PatientManager();
+        frame = new JFrame("Patient Management System");
+        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
 
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        add(mainPanel);
+        // Create fields and buttons for adding or updating a patient
+        JPanel inputPanel = new JPanel(new GridLayout(10, 2));
 
-        // Form Panel
-        JPanel formPanel = new JPanel(new GridLayout(8, 2, 10, 10));
-        formPanel.setBorder(BorderFactory.createTitledBorder("Patient Details"));
+        inputPanel.add(new JLabel("Patient ID:"));
+        txtPatientId = new JTextField();
+        inputPanel.add(txtPatientId);
 
-        firstNameField = new JTextField();
-        lastNameField = new JTextField();
-        contactField = new JTextField();
-        emailField = new JTextField();
-        addressField = new JTextArea(2, 20);
-        medicalHistoryField = new JTextArea(2, 20);
-        genderComboBox = new JComboBox<>(new String[]{"Male", "Female", "Other"});
-        dobSpinner = new JSpinner(new SpinnerDateModel());
-        ((JSpinner.DateEditor) dobSpinner.getEditor()).getFormat().applyPattern("yyyy-MM-dd");
+        inputPanel.add(new JLabel("First Name:"));
+        txtFirstName = new JTextField();
+        inputPanel.add(txtFirstName);
 
-        formPanel.add(new JLabel("First Name:"));
-        formPanel.add(firstNameField);
-        formPanel.add(new JLabel("Last Name:"));
-        formPanel.add(lastNameField);
-        formPanel.add(new JLabel("Date of Birth:"));
-        formPanel.add(dobSpinner);
-        formPanel.add(new JLabel("Gender:"));
-        formPanel.add(genderComboBox);
-        formPanel.add(new JLabel("Contact Number:"));
-        formPanel.add(contactField);
-        formPanel.add(new JLabel("Email Address:"));
-        formPanel.add(emailField);
-        formPanel.add(new JLabel("Address:"));
-        formPanel.add(new JScrollPane(addressField));
-        formPanel.add(new JLabel("Medical History:"));
-        formPanel.add(new JScrollPane(medicalHistoryField));
+        inputPanel.add(new JLabel("Last Name:"));
+        txtLastName = new JTextField();
+        inputPanel.add(txtLastName);
 
-        // Button Panel
-        JPanel buttonPanel = new JPanel();
-        addButton = new JButton("Add");
-        updateButton = new JButton("Update");
-        deleteButton = new JButton("Delete");
-        clearButton = new JButton("Clear");
-        buttonPanel.add(addButton);
-        buttonPanel.add(updateButton);
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(clearButton);
+        inputPanel.add(new JLabel("Date of Birth (yyyy-MM-dd):"));
+        txtDateOfBirth = new JTextField();
+        inputPanel.add(txtDateOfBirth);
 
-        // Table Panel
-        tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new String[]{"ID", "First Name", "Last Name", "DOB", "Gender", "Contact", "Email", "Address", "Medical History"});
-        patientTable = new JTable(tableModel);
+        inputPanel.add(new JLabel("Gender (M/F):"));
+        txtGender = new JTextField();
+        inputPanel.add(txtGender);
+
+        inputPanel.add(new JLabel("Contact Number:"));
+        txtContactNumber = new JTextField();
+        inputPanel.add(txtContactNumber);
+
+        inputPanel.add(new JLabel("Email Address:"));
+        txtEmailAddress = new JTextField();
+        inputPanel.add(txtEmailAddress);
+
+        inputPanel.add(new JLabel("Address:"));
+        txtAddress = new JTextField();
+        inputPanel.add(txtAddress);
+
+        inputPanel.add(new JLabel("Medical History:"));
+        txtMedicalHistory = new JTextField();
+        inputPanel.add(txtMedicalHistory);
+
+        btnAddPatient = new JButton("Add Patient");
+        inputPanel.add(btnAddPatient);
+
+        // Create buttons for update, delete, and search functionality
+        JPanel actionPanel = new JPanel();
+        btnUpdate = new JButton("Update");
+        btnDelete = new JButton("Delete");
+        btnSearch = new JButton("Search");
+        actionPanel.add(btnSearch);
+        actionPanel.add(btnUpdate);
+        actionPanel.add(btnDelete);
+
+        // Table to display patient records
+        patientTable = new JTable();
         JScrollPane tableScrollPane = new JScrollPane(patientTable);
 
-        mainPanel.add(formPanel, BorderLayout.NORTH);
-        mainPanel.add(buttonPanel, BorderLayout.CENTER);
-        mainPanel.add(tableScrollPane, BorderLayout.SOUTH);
+        // Layout organization
+        frame.add(inputPanel, BorderLayout.NORTH);
+        frame.add(actionPanel, BorderLayout.CENTER);
+        frame.add(tableScrollPane, BorderLayout.SOUTH);
+
+        // Load all patients initially
+        loadPatients();
+
+        // Button Actions
+        btnAddPatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPatient();
+            }
+        });
+
+        btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updatePatient();
+            }
+        });
+
+        btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deletePatient();
+            }
+        });
+
+        btnSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchPatients();
+            }
+        });
+
+        frame.setVisible(true);
     }
 
-    // Getters for form inputs
-    public String getFirstName() { return firstNameField.getText(); }
-    public String getLastName() { return lastNameField.getText(); }
-    public String getContact() { return contactField.getText(); }
-    public String getEmail() { return emailField.getText(); }
-    public String getAddress() { return addressField.getText(); }
-    public String getMedicalHistory() { return medicalHistoryField.getText(); }
-    public String getGender() { return (String) genderComboBox.getSelectedItem(); }
-    public Object getDateOfBirth() { return dobSpinner.getValue(); }
+    private void loadPatients() {
+        List<Patient> patients = patientManager.getAllPatients();
+        Object[][] data = new Object[patients.size()][11];
+        for (int i = 0; i < patients.size(); i++) {
+            Patient patient = patients.get(i);
+            data[i][0] = patient.getPatientId();
+            data[i][1] = patient.getFirstName();
+            data[i][2] = patient.getLastName();
+            data[i][3] = patient.getDateOfBirth();
+            data[i][4] = patient.getGender();
+            data[i][5] = patient.getContactNumber();
+            data[i][6] = patient.getEmailAddress();
+            data[i][7] = patient.getAddress();
+            data[i][8] = patient.getMedicalHistory();
+            data[i][9] = patient.getCreatedAt();
+            data[i][10] = patient.getUpdatedAt();
+        }
+        String[] columns = {"PatientId", "FirstName", "LastName", "DateOfBirth", "Gender", "ContactNumber", "EmailAddress", "Address", "MedicalHistory", "CreatedAt", "UpdatedAt"};
+        patientTable.setModel(new javax.swing.table.DefaultTableModel(data, columns));
+    }
 
-    // Setters for form inputs
-    public void setFirstName(String text) { firstNameField.setText(text); }
-    public void setLastName(String text) { lastNameField.setText(text); }
-    public void setContact(String text) { contactField.setText(text); }
-    public void setEmail(String text) { emailField.setText(text); }
-    public void setAddress(String text) { addressField.setText(text); }
-    public void setMedicalHistory(String text) { medicalHistoryField.setText(text); }
-    public void setGender(String gender) { genderComboBox.setSelectedItem(gender); }
-    public void setDateOfBirth(Object date) { dobSpinner.setValue(date); }
+    private void addPatient() {
+        int patientId = Integer.parseInt(txtPatientId.getText());
+        String firstName = txtFirstName.getText();
+        String lastName = txtLastName.getText();
+        String dateOfBirth = txtDateOfBirth.getText();
+        String gender = txtGender.getText();
+        String contactNumber = txtContactNumber.getText();
+        String emailAddress = txtEmailAddress.getText();
+        String address = txtAddress.getText();
+        String medicalHistory = txtMedicalHistory.getText();
+        Patient newPatient = new Patient(patientId, firstName, lastName, java.sql.Date.valueOf(dateOfBirth), gender, contactNumber, emailAddress, address, medicalHistory, new java.util.Date(), new java.util.Date());
+        if (patientManager.addPatient(newPatient)) {
+            loadPatients();
+        }
+    }
 
-    // Table Functions
-    public void addPatientRow(Object[] rowData) { tableModel.addRow(rowData); }
-    public void removePatientRow(int row) { tableModel.removeRow(row); }
-    public void clearTable() { tableModel.setRowCount(0); }
-    public int getSelectedRow() { return patientTable.getSelectedRow(); }
+    private void updatePatient() {
+        int patientId = Integer.parseInt(txtPatientId.getText());
+        String firstName = txtFirstName.getText();
+        String lastName = txtLastName.getText();
+        String dateOfBirth = txtDateOfBirth.getText();
+        String gender = txtGender.getText();
+        String contactNumber = txtContactNumber.getText();
+        String emailAddress = txtEmailAddress.getText();
+        String address = txtAddress.getText();
+        String medicalHistory = txtMedicalHistory.getText();
+        Patient updatedPatient = new Patient(patientId, firstName, lastName, java.sql.Date.valueOf(dateOfBirth), gender, contactNumber, emailAddress, address, medicalHistory, new java.util.Date(), new java.util.Date());
+        if (patientManager.updatePatient(updatedPatient)) {
+            loadPatients();
+        }
+    }
 
-    // Button Listeners
-    public void addPatientListener(ActionListener listener) { addButton.addActionListener(listener); }
-    public void updatePatientListener(ActionListener listener) { updateButton.addActionListener(listener); }
-    public void deletePatientListener(ActionListener listener) { deleteButton.addActionListener(listener); }
-    public void clearFormListener(ActionListener listener) { clearButton.addActionListener(listener); }
+    private void deletePatient() {
+        int patientId = Integer.parseInt(txtPatientId.getText());
+        if (patientManager.deletePatient(patientId)) {
+            loadPatients();
+        }
+    }
+
+    private void searchPatients() {
+        String query = txtPatientId.getText();
+        List<Patient> searchResults = patientManager.searchPatients(query);
+        Object[][] data = new Object[searchResults.size()][11];
+        for (int i = 0; i < searchResults.size(); i++) {
+            Patient patient = searchResults.get(i);
+            data[i][0] = patient.getPatientId();
+            data[i][1] = patient.getFirstName();
+            data[i][2] = patient.getLastName();
+            data[i][3] = patient.getDateOfBirth();
+            data[i][4] = patient.getGender();
+            data[i][5] = patient.getContactNumber();
+            data[i][6] = patient.getEmailAddress();
+            data[i][7] = patient.getAddress();
+            data[i][8] = patient.getMedicalHistory();
+            data[i][9] = patient.getCreatedAt();
+            data[i][10] = patient.getUpdatedAt();
+        }
+        String[] columns = {"PatientId", "FirstName", "LastName", "DateOfBirth", "Gender", "ContactNumber", "EmailAddress", "Address", "MedicalHistory", "CreatedAt", "UpdatedAt"};
+        patientTable.setModel(new javax.swing.table.DefaultTableModel(data, columns));
+    }
+
+    public static void main(String[] args) {
+        new PatientView();
+    }
 }
