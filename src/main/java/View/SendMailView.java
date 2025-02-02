@@ -1,8 +1,8 @@
 package View;
 
 import DBController.DBConnection;
-import controller.SendMail;
-import DBConnection.DBConnection;
+import Controller.SendMail;
+import DBController.DBConnection;
 
 import javax.swing.*;
 import java.awt.*;
