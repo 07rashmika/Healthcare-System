@@ -31,8 +31,7 @@ public class InventoryReport extends JFrame {
 
     public InventoryReport() {
         controller = new InventoryReportController();
-        frame = new JFrame("Book Appointment");
-        frame.setTitle("Inventory Report");
+        frame = new JFrame("Inventory Report");
         frame.setSize(1380, 720);
         frame.setContentPane(contentPane);
         frame.setLocationRelativeTo(null);
