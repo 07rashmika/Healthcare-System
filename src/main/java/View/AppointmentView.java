@@ -156,6 +156,13 @@ public class AppointmentView extends JFrame {
             }
         });
 
+    appointmentNotifyPageBtn.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            SwingUtilities.invokeLater(SendMailView::new);
+        }
+    });
+
 
 
     }

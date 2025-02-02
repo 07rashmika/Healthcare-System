@@ -81,12 +81,22 @@ public class DoctorView extends JFrame {
 
         frame.setVisible(true);
 
+        //---------------------------------Navigation Buttons------------------------//
+
+        appointmentNotifyPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(SendMailView::new);
+            }
+        });
+
         appointmentPageBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AppointmentModel model = new AppointmentModel();
                 AppointmentView view = new AppointmentView();
                 new AppointmentController(model,view);
+                frame.dispose();
             }
         });
 
@@ -131,6 +141,8 @@ public class DoctorView extends JFrame {
                 frame.dispose();
             }
         });
+
+
 
 
     }

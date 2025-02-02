@@ -60,7 +60,7 @@ public class Inventory {
 
 
         // Set up the JFrame
-         frame = new JFrame("Code Crew Health Care Management System");
+        frame = new JFrame("Code Crew Health Care Management System");
         frame.setContentPane(getMainPanel()); // Set the main panel from the View
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -69,12 +69,21 @@ public class Inventory {
         frame.setVisible(true);
         frame.setIconImage(image);
 
+        //---------------------------------Navigation Buttons------------------------//
+
         btnBookAppointments.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AppointmentModel model = new AppointmentModel();
                 AppointmentView view = new AppointmentView();
                 new AppointmentController(model,view);
+            }
+        });
+
+        appointmentNotifyPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(SendMailView::new);
             }
         });
 
@@ -117,6 +126,7 @@ public class Inventory {
                 frame.dispose();
             }
         });
+
 
 
         // Optional: Set default focus to the main panel
