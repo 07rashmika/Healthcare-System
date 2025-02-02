@@ -14,29 +14,59 @@ public class ReportView {
     private JButton generateRevenueReportButton;
     private JButton generateVisitReportButton;
     private JButton resetButton;
-    private JButton goBackButton; // Go Back button
+    private JButton goBackButton;
     private JComboBox<Integer> monthComboBox;
     private JComboBox<Integer> yearComboBox;
     private JLabel totalRevenueLabel;
     private JLabel visitCountLabel;
+
+    // Navigation buttons
+    private JButton[] navButtons = new JButton[8];
 
     // Constructor
     public ReportView() {
         frame = new JFrame("Report View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setVisible(true);
         frame.setMinimumSize(new Dimension(1380, 720));
+
+        // Create Navigation Panel (Left Side)
+        JPanel navPanel = new JPanel();
+        navPanel.setLayout(new GridLayout(9, 1, 5, 5)); // GridLayout for navigation buttons
+        navPanel.setPreferredSize(new Dimension(200, 0)); // Width of the navigation bar
+        navPanel.setBackground(new Color(70, 130, 180)); // Steel Blue background
+
+        JLabel navTitle = new JLabel("Navigation", SwingConstants.CENTER);
+        navTitle.setForeground(Color.WHITE);
+        navTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        navPanel.add(navTitle);
+
+        // Navigation button labels
+        String[] pageNames = {"Report", "Doctor", "Send Mail", "Patient", "Appointment", "Inventory", "Inventory Report"};
+
+        // Create navigation buttons and assign actions
+        for (int i = 0; i < 7; i++) {
+            navButtons[i] = new JButton(pageNames[i]); // Set proper page name
+            navButtons[i].setForeground(Color.WHITE);
+            navButtons[i].setBackground(new Color(30, 144, 255)); // Dodger Blue
+            navButtons[i].setFocusPainted(false);
+            final int pageIndex = i + 1;
+            navButtons[i].addActionListener(e -> navigateToPage(pageIndex)); // Navigate to respective page
+            navPanel.add(navButtons[i]);
+        }
+
+        frame.add(navPanel, BorderLayout.WEST); // Add nav panel to the left side
+
         // Table to display appointment details
         appointmentTable = new JTable();
-        String[] columnNames = {"Appointment ID","DoctorID", "DoctorName", "PatientId", "PatientName", "AppointmentDate", "AppointmentTime", "AppointmentFee", "Description", "Email"};
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0); // 0 rows initially
+        String[] columnNames = {"Appointment ID", "DoctorID", "DoctorName", "PatientId", "PatientName", "AppointmentDate", "AppointmentTime", "AppointmentFee", "Description", "Email"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         appointmentTable.setModel(model);
         JScrollPane tableScrollPane = new JScrollPane(appointmentTable);
 
         // Set table header background color to light green
         JTableHeader tableHeader = appointmentTable.getTableHeader();
-        tableHeader.setBackground(new Color(144, 238, 144));  // Light green color
+        tableHeader.setBackground(new Color(144, 238, 144));
 
         frame.add(tableScrollPane, BorderLayout.CENTER);
 
@@ -61,24 +91,24 @@ public class ReportView {
         generateRevenueReportButton = new JButton("Generate Revenue Report");
         generateVisitReportButton = new JButton("Generate Patient Visit Report");
         resetButton = new JButton("Reset");
-        goBackButton = new JButton("Go Back"); // Initialize the Go Back button
+        goBackButton = new JButton("Go Back");
 
-        // Set the background color for the buttons
+        // Set background color for buttons
         generateRevenueReportButton.setBackground(Color.BLUE);
         generateVisitReportButton.setBackground(Color.BLUE);
         resetButton.setBackground(Color.RED);
-        goBackButton.setBackground(new Color(144, 238, 144)); // Set Go Back button color to green
+        goBackButton.setBackground(new Color(144, 238, 144)); // Light green
 
-        // Set button text color to white for better contrast
+        // Set button text color
         generateRevenueReportButton.setForeground(Color.WHITE);
         generateVisitReportButton.setForeground(Color.WHITE);
         resetButton.setForeground(Color.WHITE);
-        goBackButton.setForeground(Color.BLACK); // Set text color for the Go Back button
+        goBackButton.setForeground(Color.BLACK);
 
         buttonPanel.add(generateRevenueReportButton);
         buttonPanel.add(generateVisitReportButton);
         buttonPanel.add(resetButton);
-        buttonPanel.add(goBackButton); // Add the Go Back button next to Reset
+        buttonPanel.add(goBackButton);
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
         // Labels to display total revenue and visit count
@@ -86,29 +116,56 @@ public class ReportView {
         totalRevenueLabel = new JLabel("Total Revenue: Rs. 0.00");
         visitCountLabel = new JLabel("Total Visits: 0");
 
-        // Set fonts for labels
+        // Set fonts
         totalRevenueLabel.setFont(new Font("Arial", Font.BOLD, 16));
         visitCountLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
-        // Set preferred size for the info panel (right column)
-        infoPanel.setPreferredSize(new Dimension(200, 0));  // Adjust width as needed
+        infoPanel.setPreferredSize(new Dimension(200, 0));
 
         infoPanel.add(totalRevenueLabel);
-        infoPanel.add(Box.createVerticalStrut(20)); // Adds space between labels
+        infoPanel.add(Box.createVerticalStrut(20));
         infoPanel.add(visitCountLabel);
         frame.add(infoPanel, BorderLayout.EAST);
 
         // Add action listener for Go Back button
-        goBackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close current ReportView window
-                new AppointmentView(); // Open the AppointmentView window
-            }
+        goBackButton.addActionListener(e -> {
+            frame.dispose();
+            new AppointmentView(); // Navigate back to AppointmentView
         });
 
         frame.pack();
         frame.setVisible(true);
+    }
+
+    // Navigation method for different pages
+    private void navigateToPage(int pageNumber) {
+        frame.dispose(); // Close the current ReportView window
+
+        switch (pageNumber) {
+            case 1:
+                new ReportView(); // ReportView
+                break;
+            case 2:
+                new DoctorView(); // DoctorView
+                break;
+            case 3:
+                new SendMailView(); // SendMailView
+                break;
+            case 4:
+                new AppointmentView(); // PatientView
+                break;
+            case 5:
+                new AppointmentView(); // AppointmentView
+                break;
+            case 6:
+                new Inventory(); // InventoryView
+                break;
+            case 7:
+                new InventoryReport(); // InventoryReport
+                break;
+            default:
+                JOptionPane.showMessageDialog(frame, "Invalid Page");
+        }
     }
 
     public int getMonthSelection() {
@@ -150,7 +207,7 @@ public class ReportView {
     }
 
     public JButton getGoBackButton() {
-        return goBackButton; // Getter for the Go Back button
+        return goBackButton;
     }
 
     public void resetLabels() {
