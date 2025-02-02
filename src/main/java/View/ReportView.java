@@ -25,7 +25,8 @@ public class ReportView {
         frame = new JFrame("Report View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-
+        frame.setVisible(true);
+        frame.setMinimumSize(new Dimension(1380, 720));
         // Table to display appointment details
         appointmentTable = new JTable();
         String[] columnNames = {"Appointment ID","DoctorID", "DoctorName", "PatientId", "PatientName", "AppointmentDate", "AppointmentTime", "AppointmentFee", "Description", "Email"};

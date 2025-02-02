@@ -1,8 +1,14 @@
 package View;
 
+import Controller.*;
+import Model.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class Inventory {
     private JPanel mainPanel;
@@ -17,6 +23,9 @@ public class Inventory {
     private JButton btnManageInventory;
     private JButton btnBookAppointments;
     private JButton btnViewReports;
+    private JButton stockNotifyPageBtn;
+    private JButton appointmentNotifyPageBtn;
+    private JButton inventoryReportPageBtn;
 
     private JTextField txtItemID;
     private JTextField txtItemName;
@@ -28,6 +37,12 @@ public class Inventory {
     private JButton btnAdd;
     private JButton btnUpdate;
     private JButton btnDelete;
+    JFrame frame;
+
+    URL imageUrl = DoctorView.class.getResource("/Icons/app-icon.png");
+    ImageIcon icon = new ImageIcon(imageUrl);
+    Image image = icon.getImage();
+
 
     public Inventory() {
         // Initialize components
@@ -40,6 +55,72 @@ public class Inventory {
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         mainPanel.add(sidebarPanel, BorderLayout.WEST);
         mainPanel.add(contentPanel, BorderLayout.CENTER);
+
+        // Instantiate the View and Model
+
+
+        // Set up the JFrame
+         frame = new JFrame("Code Crew Health Care Management System");
+        frame.setContentPane(getMainPanel()); // Set the main panel from the View
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setMinimumSize(new Dimension(1380, 720));  // Ensure the GUI has a suitable size
+        frame.setLocationRelativeTo(null);              // Center the frame
+        frame.setVisible(true);
+        frame.setIconImage(image);
+
+        btnBookAppointments.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AppointmentModel model = new AppointmentModel();
+                AppointmentView view = new AppointmentView();
+                new AppointmentController(model,view);
+            }
+        });
+
+        btnManageDoctors.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DoctorModel model = new DoctorModel();
+                DoctorView view = new DoctorView();
+                new DoctorController(model, view);
+                frame.dispose();
+            }
+        });
+
+
+        stockNotifyPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PharmacyModel model = new PharmacyModel();
+                PharmacyView view = new PharmacyView();
+                new PharmacyController(model, view);
+                frame.dispose();
+            }
+        });
+
+        inventoryReportPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new InventoryReport();
+                frame.dispose();
+            }
+        });
+
+        btnViewReports.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReportView reportView = new ReportView();// Explicitly calling frame.setVisible(true)
+                // Create the model and controller for the ReportView
+                ReportModel model = new ReportModel();
+                new ReportController(model, reportView);
+                frame.dispose();
+            }
+        });
+
+
+        // Optional: Set default focus to the main panel
+        SwingUtilities.invokeLater(() -> getMainPanel().requestFocusInWindow());
     }
 
     private JPanel createHeaderPanel() {
@@ -60,17 +141,22 @@ public class Inventory {
         panel.setBackground(new Color(152, 251, 152)); // Light green
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        btnManageDoctors = new JButton("Manage Doctors", new ImageIcon(getClass().getResource("/Icons/doctor-icon.png")));
+        btnManageDoctors = new JButton("Manage Doctors", new ImageIcon(getClass().getResource("/Icons/doctor-icon-2.png")));
         btnManagePatients = new JButton("Manage Patients", new ImageIcon(getClass().getResource("/Icons/patient-icon.png")));
-        btnManageInventory = new JButton("Manage Inventory");
-        btnBookAppointments = new JButton("Book Appointments");
-        btnViewReports = new JButton("View Reports");
+        btnManageInventory = new JButton("Manage Inventory", new ImageIcon(getClass().getResource("/Icons/inventory-icon-2.png")));
+        btnBookAppointments = new JButton("Book Appointments", new ImageIcon(getClass().getResource("/Icons/appointment-icon.png")));
+        btnViewReports = new JButton("View Reports", new ImageIcon(getClass().getResource("/Icons/report-icon.png")));
+        stockNotifyPageBtn = new JButton("Stock Notification", new ImageIcon(getClass().getResource("/Icons/Stock-notify-icon.png")));
+        appointmentNotifyPageBtn = new JButton("Appointment Notification", new ImageIcon(getClass().getResource("/Icons/Appointment-notify-icon.png")));
+        inventoryReportPageBtn = new JButton("Inventory Report", new ImageIcon(getClass().getResource("/Icons/report-icon.png")));
 
         panel.add(btnManageDoctors);
         panel.add(btnManagePatients);
         panel.add(btnManageInventory);
         panel.add(btnBookAppointments);
         panel.add(btnViewReports);
+        panel.add(stockNotifyPageBtn);
+        panel.add(appointmentNotifyPageBtn);
 
         return panel;
     }

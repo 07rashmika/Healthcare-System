@@ -6,18 +6,27 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.net.URL;
 import java.util.List;
+
 
 public class PharmacyView extends JFrame {
     private JTable table;
     private DefaultTableModel tableModel;
     private JButton refreshButton;
 
+
+    URL imageUrl = AppointmentView.class.getResource("/Icons/app-icon.png");
+    ImageIcon icon = new ImageIcon(imageUrl);
+    Image image = icon.getImage();
+
     public PharmacyView() {
         setTitle("Low Stock Medications");
-        setSize(800, 400);
+        setSize(1380, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setVisible(true);
+        setIconImage(image);
         setupUI();
     }
 

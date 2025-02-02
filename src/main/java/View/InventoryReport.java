@@ -30,10 +30,12 @@ public class InventoryReport extends JFrame {
         controller = new InventoryReportController();
 
         setTitle("Inventory Report");
-        setSize(1300, 720);
+        setSize(1380, 720);
         setContentPane(contentPane);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getRootPane().setDefaultButton(buttonOK);
+        setVisible(true);
 
         // Load categories from the database
         loadCategories();
