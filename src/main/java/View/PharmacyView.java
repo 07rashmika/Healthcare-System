@@ -12,6 +12,7 @@ public class PharmacyView extends JFrame {
     private JTable table;
     private DefaultTableModel tableModel;
     private JButton refreshButton;
+    private JTextField textField1;
 
     public PharmacyView() {
         setTitle("Low Stock Medications");

@@ -86,6 +86,7 @@
               <background color="-7676275"/>
               <font name="Georgia" size="18" style="1"/>
               <foreground color="-13619152"/>
+              <hideActionText value="false"/>
               <icon value="Icons/patient-icon.png"/>
               <text value="Manage Patients"/>
             </properties>
