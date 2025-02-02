@@ -77,6 +77,7 @@ public class Inventory {
                 AppointmentModel model = new AppointmentModel();
                 AppointmentView view = new AppointmentView();
                 new AppointmentController(model,view);
+                frame.dispose();
             }
         });
 
