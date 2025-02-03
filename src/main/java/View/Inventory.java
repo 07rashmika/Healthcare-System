@@ -46,7 +46,7 @@ public class Inventory {
         JPanel panel = new JPanel(new FlowLayout());
         panel.setBackground(new Color(144, 238, 144)); // Light green
 
-        JLabel headerLabel = new JLabel("Code Crew Health Care Management System");
+        JLabel headerLabel = new JLabel("MedicarePlus Health Care Management System");
         headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
         headerLabel.setForeground(Color.BLACK);
         headerLabel.setIcon(new ImageIcon(getClass().getResource("/Icons/app-icon.png"))); // Load icon

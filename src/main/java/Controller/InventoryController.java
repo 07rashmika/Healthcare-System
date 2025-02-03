@@ -23,7 +23,7 @@ public class InventoryController {
         this.model = model;
         this.view = view;
 
-//         Add button listeners
+//   Add button listeners
         this.view.getBtnAdd().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -122,7 +122,7 @@ public class InventoryController {
             float unitPrice = Float.parseFloat(view.getTxtUnitPrice().getText());
             String category = view.getTxtCategory().getText();
 
-            // 2. Validate the data
+
             if (itemID.isEmpty() || itemName.isEmpty() || category.isEmpty()) {
                 JOptionPane.showMessageDialog(view.getMainPanel(),
                         "Please fill in all required fields.",
@@ -149,7 +149,7 @@ public class InventoryController {
                     category
             );
 
-            // 4. Provide feedback to the user
+
             if (success) {
                 JOptionPane.showMessageDialog(view.getMainPanel(),
                         "Item updated successfully!",

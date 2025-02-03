@@ -84,6 +84,7 @@ public class InventoryModel {
             prepstmt.setInt(7, itemID);  // Update based on itemID
 
             result = prepstmt.executeUpdate();
+
         } catch (SQLException e) {
             System.out.println("Couldn't update data: " + e.getMessage());
         }

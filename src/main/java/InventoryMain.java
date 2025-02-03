@@ -31,12 +31,12 @@ public class InventoryMain {
             new InventoryController(model, view);
 
             // Set up the JFrame
-            JFrame frame = new JFrame("Code Crew Health Care Management System");
+            JFrame frame = new JFrame("Medicare Plus Health Care Management System");
             frame.setContentPane(view.getMainPanel()); // Set the main panel from the View
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setMinimumSize(new Dimension(900, 600));  // Ensure the GUI has a suitable size
-            frame.setLocationRelativeTo(null);              // Center the frame
+            frame.setLocationRelativeTo(null);  // Center the frame
             frame.setVisible(true);
 
             // Optional: Set default focus to the main panel
