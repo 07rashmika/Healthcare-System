@@ -104,6 +104,7 @@ public class SendMailView extends JFrame {
                                         "Appointment ID not found.", "Error", JOptionPane.ERROR_MESSAGE));
                             }
 
+                            //checks if the connection it set to database
                         } catch (Exception ex) {
                             ex.printStackTrace();
                             SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(SendMailView.this,

@@ -1,13 +1,7 @@
 package View;
 
-import Controller.AppointmentController;
-import Controller.DoctorController;
-import Controller.InventoryController;
-import Controller.ReportController;
-import Model.AppointmentModel;
-import Model.DoctorModel;
-import Model.InventoryModel;
-import Model.ReportModel;
+import Controller.*;
+import Model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +24,7 @@ public class ReportView {
     private JLabel visitCountLabel;
 
     // Navigation buttons
-    private JButton[] navButtons = new JButton[8];
+    private JButton[] navButtons = new JButton[9];
 
     // Constructor
     public ReportView() {
@@ -51,7 +45,7 @@ public class ReportView {
         navPanel.add(navTitle);
 
         // Navigation button labels
-        String[] pageNames = {"Report", "Doctor", "Send Mail", "Patient", "Appointment", "Inventory", "Inventory Report"};
+        String[] pageNames = {"Report", "Doctor", "Send Mail", "Patient", "Appointment", "Inventory", "Inventory Report","Stock Notification"};
 
         // Create navigation buttons and assign actions
         for (int i = 0; i < 7; i++) {
@@ -182,6 +176,11 @@ public class ReportView {
                 break;
             case 7:
                 new InventoryReport(); // InventoryReport
+                break;
+            case 8:
+                PharmacyModel pharmacyModel = new PharmacyModel();
+                PharmacyView Pharmacyview = new PharmacyView();
+                new PharmacyController(pharmacyModel, Pharmacyview); // InventoryReport
                 break;
             default:
                 JOptionPane.showMessageDialog(frame, "Invalid Page");

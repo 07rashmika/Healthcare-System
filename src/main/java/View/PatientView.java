@@ -15,7 +15,7 @@ public class PatientView {
     private JButton btnAddPatient, btnUpdate, btnDelete, btnSearch;
     private JTable patientTable;
     private PatientManager patientManager;
-    private JButton[] navButtons = new JButton[8];
+//    private JButton[] navButtons = new JButton[8];
     JPanel navPanel;
     JLabel navTitle;
 
@@ -38,16 +38,7 @@ public class PatientView {
 
         String[] pageNames = {"Report", "Doctor", "Send Mail", "Patient", "Appointment", "Inventory", "Inventory Report"};
 
-        // Create navigation buttons and assign actions
-        for (int i = 0; i < 7; i++) {
-            navButtons[i] = new JButton(pageNames[i]); // Set proper page name
-            navButtons[i].setForeground(Color.WHITE);
-            navButtons[i].setBackground(new Color(30, 144, 255)); // Dodger Blue
-            navButtons[i].setFocusPainted(false);
-            final int pageIndex = i + 1;
-            navButtons[i].addActionListener(e -> navigateToPage(pageIndex)); // Navigate to respective page
-            navPanel.add(navButtons[i]);
-        }
+
 
 
         // Create fields and buttons for adding or updating a patient
@@ -113,7 +104,7 @@ public class PatientView {
         // Load all patients initially
         loadPatients();
 
-        frame.add(navPanel, BorderLayout.EAST);
+//        frame.add(navPanel, BorderLayout.EAST);
         // Button Actions
         btnAddPatient.addActionListener(new ActionListener() {
             @Override
@@ -167,46 +158,7 @@ public class PatientView {
         patientTable.setModel(new javax.swing.table.DefaultTableModel(data, columns));
     }
 
-    private void navigateToPage(int pageNumber) {
-        frame.dispose(); // Close the current ReportView window
 
-        switch (pageNumber) {
-            case 1:
-                ReportView reportView = new ReportView();// Explicitly calling frame.setVisible(true)
-                // Create the model and controller for the ReportView
-                ReportModel model = new ReportModel();
-                new ReportController(model, reportView); // ReportView
-                break;
-            case 2:
-                DoctorModel Doctormodel = new DoctorModel();
-                DoctorView view = new DoctorView();
-                new DoctorController(Doctormodel, view); // DoctorView
-                break;
-            case 3:
-                new SendMailView(); // SendMailView
-                break;
-            case 4:
-                new PatientView(); // PatientView
-                break;
-            case 5:
-                AppointmentModel Apointmentmodel = new AppointmentModel();
-                AppointmentView Appointmentview = new AppointmentView();
-                new AppointmentController(Apointmentmodel,Appointmentview);  // AppointmentView
-                break;
-            case 6:
-                Inventory Inventoryview = new Inventory();
-                InventoryModel Inventorymodel = new InventoryModel();
-
-                // Pass the View and Model to the Controller
-                new InventoryController(Inventorymodel, Inventoryview); // InventoryView
-                break;
-            case 7:
-                new InventoryReport(); // InventoryReport
-                break;
-            default:
-                JOptionPane.showMessageDialog(frame, "Invalid Page");
-        }
-    }
 
     private void addPatient() {
         int patientId = Integer.parseInt(txtPatientId.getText());

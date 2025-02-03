@@ -11,6 +11,7 @@ public class SendMail {
     private static final String EMAIL_USERNAME = "helloworldsahan@gmail.com";
     private static final String EMAIL_PASSWORD = "xmmpaqeyuxtyeyhy";  // Use App Password here
 
+    //message body
     public static void sendAppointmentNotification(String patientEmail, String patientName, String appointmentId, String location, String doctorName) {
         String subject = "Appointment Reminder - MedicarePlus";
         String body = "Dear " + patientName + ",\n\n"
@@ -44,6 +45,8 @@ public class SendMail {
             }
         });
 
+        //success or fail message
+
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(EMAIL_USERNAME));
@@ -63,7 +66,5 @@ public class SendMail {
         }
     }
 
-//    public static void main(String[] args) {
-//        sendAppointmentNotification("sdwickkramaarachchi@gmail.com", "sahan", "1","madama","hhhh") ;
-//    }
+
 }
