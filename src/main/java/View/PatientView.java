@@ -1,7 +1,7 @@
 package View;
 
-import Controller.PatientManager;
-import Model.Patient;  // Ensure this matches the actual package path of your Patient.java class
+import Controller.*;
+import Model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,13 +15,40 @@ public class PatientView {
     private JButton btnAddPatient, btnUpdate, btnDelete, btnSearch;
     private JTable patientTable;
     private PatientManager patientManager;
+    private JButton[] navButtons = new JButton[8];
+    JPanel navPanel;
+    JLabel navTitle;
 
     public PatientView() {
         patientManager = new PatientManager();
         frame = new JFrame("Patient Management System");
-        frame.setSize(800, 600);
+        frame.setSize(1380, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
+
+         navPanel = new JPanel();
+        navPanel.setLayout(new GridLayout(9, 1, 5, 5)); // GridLayout for navigation buttons
+        navPanel.setPreferredSize(new Dimension(200, 600)); // Width of the navigation bar
+        navPanel.setBackground(new Color(70, 130, 180));
+
+        navTitle = new JLabel("Navigation", SwingConstants.CENTER);
+        navTitle.setForeground(Color.WHITE);
+        navTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        navPanel.add(navTitle);
+
+        String[] pageNames = {"Report", "Doctor", "Send Mail", "Patient", "Appointment", "Inventory", "Inventory Report"};
+
+        // Create navigation buttons and assign actions
+        for (int i = 0; i < 7; i++) {
+            navButtons[i] = new JButton(pageNames[i]); // Set proper page name
+            navButtons[i].setForeground(Color.WHITE);
+            navButtons[i].setBackground(new Color(30, 144, 255)); // Dodger Blue
+            navButtons[i].setFocusPainted(false);
+            final int pageIndex = i + 1;
+            navButtons[i].addActionListener(e -> navigateToPage(pageIndex)); // Navigate to respective page
+            navPanel.add(navButtons[i]);
+        }
+
 
         // Create fields and buttons for adding or updating a patient
         JPanel inputPanel = new JPanel(new GridLayout(10, 2));
@@ -86,6 +113,7 @@ public class PatientView {
         // Load all patients initially
         loadPatients();
 
+        frame.add(navPanel, BorderLayout.EAST);
         // Button Actions
         btnAddPatient.addActionListener(new ActionListener() {
             @Override
@@ -137,6 +165,47 @@ public class PatientView {
         }
         String[] columns = {"PatientId", "FirstName", "LastName", "DateOfBirth", "Gender", "ContactNumber", "EmailAddress", "Address", "MedicalHistory", "CreatedAt", "UpdatedAt"};
         patientTable.setModel(new javax.swing.table.DefaultTableModel(data, columns));
+    }
+
+    private void navigateToPage(int pageNumber) {
+        frame.dispose(); // Close the current ReportView window
+
+        switch (pageNumber) {
+            case 1:
+                ReportView reportView = new ReportView();// Explicitly calling frame.setVisible(true)
+                // Create the model and controller for the ReportView
+                ReportModel model = new ReportModel();
+                new ReportController(model, reportView); // ReportView
+                break;
+            case 2:
+                DoctorModel Doctormodel = new DoctorModel();
+                DoctorView view = new DoctorView();
+                new DoctorController(Doctormodel, view); // DoctorView
+                break;
+            case 3:
+                new SendMailView(); // SendMailView
+                break;
+            case 4:
+                new PatientView(); // PatientView
+                break;
+            case 5:
+                AppointmentModel Apointmentmodel = new AppointmentModel();
+                AppointmentView Appointmentview = new AppointmentView();
+                new AppointmentController(Apointmentmodel,Appointmentview);  // AppointmentView
+                break;
+            case 6:
+                Inventory Inventoryview = new Inventory();
+                InventoryModel Inventorymodel = new InventoryModel();
+
+                // Pass the View and Model to the Controller
+                new InventoryController(Inventorymodel, Inventoryview); // InventoryView
+                break;
+            case 7:
+                new InventoryReport(); // InventoryReport
+                break;
+            default:
+                JOptionPane.showMessageDialog(frame, "Invalid Page");
+        }
     }
 
     private void addPatient() {
@@ -200,7 +269,5 @@ public class PatientView {
         patientTable.setModel(new javax.swing.table.DefaultTableModel(data, columns));
     }
 
-    public static void main(String[] args) {
-        new PatientView();
-    }
+
 }

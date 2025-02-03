@@ -97,6 +97,13 @@ public class Inventory {
                 frame.dispose();
             }
         });
+        btnManagePatients.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new PatientView();
+                frame.dispose();
+            }
+        });
 
 
         stockNotifyPageBtn.addActionListener(new ActionListener() {

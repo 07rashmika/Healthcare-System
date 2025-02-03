@@ -1,5 +1,14 @@
 package View;
 
+import Controller.AppointmentController;
+import Controller.DoctorController;
+import Controller.InventoryController;
+import Controller.ReportController;
+import Model.AppointmentModel;
+import Model.DoctorModel;
+import Model.InventoryModel;
+import Model.ReportModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -143,22 +152,33 @@ public class ReportView {
 
         switch (pageNumber) {
             case 1:
-                new ReportView(); // ReportView
+                ReportView reportView = new ReportView();// Explicitly calling frame.setVisible(true)
+                // Create the model and controller for the ReportView
+                ReportModel model = new ReportModel();
+                new ReportController(model, reportView); // ReportView
                 break;
             case 2:
-                new DoctorView(); // DoctorView
+                DoctorModel Doctormodel = new DoctorModel();
+                DoctorView view = new DoctorView();
+                new DoctorController(Doctormodel, view); // DoctorView
                 break;
             case 3:
                 new SendMailView(); // SendMailView
                 break;
             case 4:
-                new AppointmentView(); // PatientView
+                new PatientView(); // PatientView
                 break;
             case 5:
-                new AppointmentView(); // AppointmentView
+                AppointmentModel Apointmentmodel = new AppointmentModel();
+                AppointmentView Appointmentview = new AppointmentView();
+                new AppointmentController(Apointmentmodel,Appointmentview);  // AppointmentView
                 break;
             case 6:
-                new Inventory(); // InventoryView
+                Inventory Inventoryview = new Inventory();
+                InventoryModel Inventorymodel = new InventoryModel();
+
+                // Pass the View and Model to the Controller
+                new InventoryController(Inventorymodel, Inventoryview); // InventoryView
                 break;
             case 7:
                 new InventoryReport(); // InventoryReport

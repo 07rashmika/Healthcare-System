@@ -137,6 +137,14 @@ public class AppointmentView extends JFrame {
             }
         });
 
+        patientPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new PatientView();
+                frame.dispose();
+            }
+        });
+
         inventoryReportPageBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

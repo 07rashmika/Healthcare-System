@@ -28,7 +28,5 @@ public class PharmacyController {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new PharmacyController(new PharmacyModel(), new PharmacyView()).view.setVisible(true));
-    }
+
 }

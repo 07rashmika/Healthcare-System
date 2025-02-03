@@ -74,6 +74,14 @@ public class InventoryReport extends JFrame {
             }
         });
 
+        patientPageBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new PatientView();
+                frame.dispose();
+            }
+        });
+
         inventoryPageBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
