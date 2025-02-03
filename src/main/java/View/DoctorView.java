@@ -194,6 +194,8 @@ public class DoctorView extends JFrame {
     }
 
 
+
+    //field getters
     public JTextField getDoctorIDField() {
         return txtID;
     }

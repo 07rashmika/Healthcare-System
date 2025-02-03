@@ -1,3 +1,5 @@
+package View;
+
 import Model.Patient;
 import javax.swing.table.DefaultTableModel;  // Ensure this matches the actual package path of your Patient.java class
 

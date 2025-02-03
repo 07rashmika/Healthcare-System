@@ -9,6 +9,7 @@ public class DoctorController {
     private DoctorModel model;
     private DoctorView view;
 
+    //constructor
     public DoctorController(DoctorModel model, DoctorView view) {
         this.model = model;
         this.view = view;
@@ -28,6 +29,7 @@ public class DoctorController {
         loadDoctorTable();
     }
 
+    //updating the table
     private void loadDoctorTable() {
         DefaultTableModel tableModel = (DefaultTableModel) view.getDoctorTable().getModel();
         tableModel.setRowCount(0); // Clear the table
@@ -36,6 +38,7 @@ public class DoctorController {
         }
     }
 
+    //adding doctor
     private void addDoctor() {
         int ID = Integer.parseInt(view.getDoctorIDField().getText()) ;
         String firstName = view.getFirstNameField().getText();
@@ -51,6 +54,7 @@ public class DoctorController {
         }
     }
 
+    //updating doctor
     private void updateDoctor() {
         try {
             int doctorID = Integer.parseInt(view.getDoctorIDField().getText());
@@ -70,6 +74,7 @@ public class DoctorController {
         }
     }
 
+    //deleting doctor
     private void deleteDoctor() {
         try {
             int doctorID = Integer.parseInt(view.getDoctorIDField().getText());

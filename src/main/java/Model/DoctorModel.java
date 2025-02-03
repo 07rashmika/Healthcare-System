@@ -9,6 +9,7 @@ import java.util.List;
 public class DoctorModel {
     private Connection connection;
 
+    //creating connection
     public DoctorModel() {
         try {
             connection = DBConnection.startConnection();
@@ -16,7 +17,7 @@ public class DoctorModel {
             e.printStackTrace();
         }
     }
-    //Details
+    //get the details of doctors from table
     public List<Object[]> getAllDoctors() {
         List<Object[]> doctors = new ArrayList<>();
         try {
@@ -39,7 +40,7 @@ public class DoctorModel {
         }
         return doctors;
     }
-
+    //add doctor to the table using add doctor
     public boolean addDoctor(int ID, String firstName, String lastName, String phone, String specialization, String gender) {
         try {
             String query = "INSERT INTO SA24610154_Doctors (DoctorID, FirstName, LastName, PhoneNumber, Specialization, Gender) VALUES (?, ?, ?, ?, ?, ?)";
@@ -56,7 +57,7 @@ public class DoctorModel {
         }
         return false;
     }
-
+    //updating doctor info
     public boolean updateDoctor(int doctorID, String firstName, String lastName, String phone, String specialization, String gender) {
         try {
             String query = "UPDATE SA24610154_Doctors SET FirstName = ?, LastName = ?, PhoneNumber = ?, Specialization = ?, Gender = ? WHERE DoctorID = ?";
@@ -73,7 +74,7 @@ public class DoctorModel {
         }
         return false;
     }
-
+    //deleting a doctor
     public boolean deleteDoctor(int doctorID) {
         try {
             String query = "DELETE FROM SA24610154_Doctors WHERE DoctorID = ?";

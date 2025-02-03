@@ -60,7 +60,7 @@ public class Inventory {
 
 
         // Set up the JFrame
-        frame = new JFrame("Code Crew Health Care Management System");
+        frame = new JFrame("Medicare plus Health Care Management System");
         frame.setContentPane(getMainPanel()); // Set the main panel from the View
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

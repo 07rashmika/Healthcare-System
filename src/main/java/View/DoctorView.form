@@ -37,7 +37,7 @@
               <font name="Times New Roman" size="38" style="1"/>
               <foreground color="-16777216"/>
               <icon value="Icons/title-icon-2.png"/>
-              <text value="Code Crew Health Care Management System"/>
+              <text value="Medicare plus Health Care Management System"/>
             </properties>
           </component>
         </children>
