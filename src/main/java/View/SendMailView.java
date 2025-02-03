@@ -39,6 +39,7 @@ public class SendMailView extends JFrame {
         constraints.gridy = 0;
         panel.add(new JLabel("Appointment ID:"), constraints);
 
+
         constraints.gridx = 1;
         panel.add(appointmentIdField, constraints);
 
@@ -113,7 +114,7 @@ public class SendMailView extends JFrame {
             }
         });
 
-        // Frame settings
+        // Frame visibility settings of jpanel
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(500, 300);
         setLocationRelativeTo(null); // Center the frame

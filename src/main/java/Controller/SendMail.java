@@ -26,6 +26,7 @@ public class SendMail {
                 + "Best regards,\n"
                 + "MedicarePlus Team";
 
+        //API created
         sendEmail(patientEmail, subject, body);
     }
 
